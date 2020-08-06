@@ -1,0 +1,100 @@
+
+
+
+<form class="mx-auto" action="/user/signup" method="POST" style="width: 400px;">
+
+    <h1>Sign Up</h1> <br>
+
+    <div class="form-group">
+        <div class="row">
+
+            <div class="col-12 col-sm-12 col-lg-12 col-xl-12">
+                <label class="">User name*:</label><br>
+                <input type="text" class="form-control" id="username" name="User[username]" style="width: 100%;" required/>
+
+                <button class="btn btn-danger" type="button" style="color: floralwhite;margin-top: 5px;" onclick="check()">Check the user name</button>
+                <div id="note" style="color: red;" hidden=true><b>This user name has been used.</b></div>
+                <div id="note2" style="color: red;" hidden=true><b>Please enter your user name.</b></div>
+                <div id="note3" style="color:green;" hidden=true><b>√ Checked.</b></div>
+                <br>
+            </div>
+
+            <div class=" col-12 col-sm-12 col-lg-12 col-xl-12">
+                    <label>Password*:</label><br>
+                    <input type="password" class="form-control" id="realname" name="User[password]" style="width: 100%;" required/><br>
+            </div>
+
+            <div class=" col-12 col-sm-12 col-lg-12 col-xl-12">
+                <label>Real name*:</label><br>
+                <input type="text" class="form-control" id="realname" name="User[realname]" style="width: 100%;" required/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-12 col-xl-12">
+            <label>Gender*:</label><br>
+            <select  class="form-control" name="User[gender]" id="selector" style="width: 100%;" required></select>
+            <br>
+            </div>
+
+            <div class=" col-12 col-sm-12 col-lg-12 col-xl-12">
+            <label>Age*:</label><br>
+                <input type="number" class="form-control" id="age" name="User[age]" style="width:100%" required/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-12 col-xl-12">
+                <br>
+                <button type="submit" class="btn btn-primary" id="submit" style="width: 80px;" disabled>Submit</button><br>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    function onPageLoaded(){
+        var estatesList = ["male","female"];
+        var estatesSleector = document.getElementById("selector");
+        estatesList.forEach(function(item){
+        var option = document.createElement("option");
+        option.text=item;
+        option.value=item;
+        estatesSleector.add(option);
+        });
+    };
+
+
+    async function check(){
+        var successflag = false;
+        var usernameText = document.getElementById("username").value;
+        if(!usernameText){
+                document.getElementById("note2").hidden=false;
+        }else{
+            document.getElementById("note2").hidden=true;
+
+                var response = await fetch('/user/check/'+usernameText,{
+                method:"GET",
+                credentials:'same-origin',
+            });
+
+            if(response.ok){
+                var data = await response.json();
+                if(data.message == "ok"){
+                    successflag = true;
+                    document.getElementById("note").hidden=true;
+                    document.getElementById("submit").disabled=false;
+                    document.getElementById("note3").hidden=false;
+                }else if(data.message == "no"){
+                    successflag = false;
+                    document.getElementById("note").hidden=false;
+                    document.getElementById("submit").disabled='disabled';
+                    document.getElementById("note3").hidden=true;
+                }
+            }
+        }
+
+    };

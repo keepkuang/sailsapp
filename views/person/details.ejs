@@ -1,0 +1,131 @@
+<h1><%=resident.title%></h1><br>
+<div class="card col-12">
+    <div class="row">
+        <img class="card img-fulid img-tumbnail col-12 col-sm-12 col-lg-7 col-xl-7" style="padding: 0px 0px 0px; overflow: hidden" src="<%=imgSrc%>"/>
+        
+        <div class="col-12 col-sm-12 col-lg-5 col-xl-5" style="padding: 5px 5px 5px;">
+            <table class="table table-striped table-hover table-bordered" style="align-self: center;">
+                <tr><td><b>Estates:&nbsp;</b> <%=resident.estate%>  </td></tr>
+                <tr><td><b>Gross Area:&nbsp;</b>  <%=resident.gross%>&nbsp;feet  </td></tr>
+                <tr><td><b>Rent:&nbsp;</b> HK$<%=resident.rent%> </td></tr>
+                <tr><td><b>Bedrooms:&nbsp;</b> <%=resident.bedrooms%> </td></tr>
+                <tr><td><b>Expected Tenants:&nbsp;</b> <%=resident.expected%> </td></tr>
+                <tr><td><b>Applicants:&nbsp;</b> <%=user_count%> </td></tr>
+                <tr><td><b>Created:&nbsp;</b>  <%=createdDateString%>  </td></tr>
+                <tr><td><b>Updated:&nbsp;</b>  <%=updatedDateString%>   </td></tr>
+            </table>
+
+            <%
+            var index = uidList.indexOf(user_uid);
+            var available =resident.expected - user_count;
+            if(index<0){
+            %>
+
+
+            <div class="col-6 col-sm-6 col-lg-6 col-xl-6" style="color: crimson;"> 
+            <%if(available<=0){%>
+            <b>Not Available.</b>
+            <%}else{%>
+            <b>Available:&nbsp;</b><%=available%>
+            <%}%>
+ 
+            
+            </div>
+
+
+            <%if(available<=0){%>
+            <button class="btn btn-primary col-6 col-sm-6 col-lg-6 col-xl-6" type="button"  style="float:right;" onclick="onClickCoRent()" disabled="disabled">Co-rent</button>
+            <%}else{%>
+            <button class="btn btn-primary col-6 col-sm-6 col-lg-6 col-xl-6" type="button"  style="float:right;" onclick="onClickCoRent()">Co-rent</button>
+            <%}%>
+            
+            <%}else{%>
+
+            <div class="col-6 col-sm-6 col-lg-6 col-xl-6" style="color: crimson;"> <b>Available:&nbsp;</b><%=resident.expected - user_count%></div>
+
+            <button class="btn btn-danger col-6 col-sm-6 col-lg-6 col-xl-6" type="button" style="float: right;" onclick="onClickMoveOut()">Move out</button>
+
+            <%}%>
+
+                
+
+
+
+
+        </div>
+    
+    </div>
+
+</div>
+
+
+
+<br><br>
+<h3>Location</h3>
+<iframe class="col-12 col-sm-12 col-lg-12 col-xl-12"
+src="https://leafletapi.mtchoy.now.sh/index.html?lat=<%=resident.latitude%>&lng=<%=resident.longitude%>&zoom=17&markerLat=<%=resident.latitude%>&markerLng=<%=resident.longitude%>&markerTitle=<%=resident.estate%>&locate=false"
+height="400px" frameborder="0">
+</iframe>
+
+
+<br><br>
+
+
+
+<%if(users.length!=0){%>
+
+    <h3>Roomate(s)</h3>
+
+<table class="table table-hover" style="margin: auto; text-align: center">
+
+    <%if(index<0){%>
+        <thead class="bg-primary" style="color: lightyellow;">
+    <%}else{%>
+        <thead class="bg-danger" style="color: lightyellow;">
+    <%}%>
+
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">User name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Age</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%
+        var i=1;
+        users.forEach(function(model) {
+        %> 
+
+
+                <tr>
+                    <th scope="row"><%=i%></th>
+                    <td><a href="/user/information/<%=model.id%>"><b><%=model.username%></b></a></td>
+                    <td><b><%=model.gender%></b></td>
+                    <td><b><%=model.age%></b></td>
+                </tr>
+
+
+        <% 
+        i++;   
+        });
+        %>
+    </tbody>
+</table>
+
+<%}%>
+
+
+
+<br><br>
+<br><br>
+
+
+<script>
+
+function onPageLoaded(){
+
+};
+
+</script>

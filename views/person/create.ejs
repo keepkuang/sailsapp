@@ -1,0 +1,68 @@
+<!--create.ejs-->
+<h1>Property Create form</h1>
+
+<form action="/create" method="POST">
+
+    <div class="form-group">
+        <div class="row">
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+                <label>Property title*:</label><br>
+                <input type="text" class="form-control" id="title" name="Person[title]" style="width: 100%;" required/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+                <label>Image URL:</label><br>
+                <input type="url" class="form-control" id="img" name="Person[img]" style="width: 100%;"/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <label>Estate*:</label><br>
+            <input type="text" class="form-control" id="estate" name="Person[estate]" style="width: 100%;" required/><br>
+        </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <label>Bedrooms*:</label><br>
+                <input type="number" class="form-control" id="bedrooms" name="Person[bedrooms]" style="width:100%" required/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <label>Gross Area(feet)*:</label><br>
+                <input type="number" class="form-control" min="1" id="gross" name="Person[gross]" style="width:100%" required/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <label>Expected Tenants:</label><br>
+                <input type="number" class="form-control" min="1" id="expected" name="Person[expected]" style="width:100%"/><br>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <label>Rent(HK$)*:</label><br>
+                <input type="number" class="form-control" min="1" id="rent" name="Person[rent]" style="width:100%" required/><br>
+            </div>
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+            <span><input type="checkbox" id="highlighted" onchange="onChange(this)" value="true" checked/>Highlighted Property</span><br>
+            <input type="hidden" id="highlighted_hid" name="Person[highlighted]" value="true"/>
+            </div>
+
+
+            <div class=" col-12 col-sm-12 col-lg-6 col-xl-6">
+                <br>
+                <button type="submit" class="btn btn-primary" id="submit" style="width: 80px;">Submit</button><br>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</form>
+

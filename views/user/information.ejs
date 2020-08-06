@@ -1,0 +1,143 @@
+
+<%
+if(req.session.uid == info.id){
+%>
+
+<h1>Hi,<%=info.username%></h1>
+<br>
+<h5><b>Real name:</b>&nbsp;&nbsp;<%=info.realname%></h5>
+
+<%
+}else{
+%>
+
+<h1><%=info.username%></h1>
+<br>
+
+
+
+<%}%>
+
+<h5><b>Gender:</b>&nbsp;&nbsp;<%=info.gender%></h5>
+<h5><b>Age:</b>&nbsp;&nbsp;<%=info.age%></h5>
+<h5><b>User group:</b>&nbsp;&nbsp;<%=info.role%></h5>
+
+<br>
+
+
+
+<%
+if(req.session.uid == info.id || req.session.role == "admin"){
+%>
+
+
+
+
+<%
+if(req.session.uid == info.id){
+%>
+<h3 style="color:darkslategray;">You have rented <%=persons.length%> person(s)</h3>
+
+<%
+}else{
+%>
+<h3 style="color:darkslategray;">The client have rented <%=persons.length%> person(s)</h3>
+<%
+}
+%>
+
+
+
+
+<table class="table table-hover" style="margin: auto; text-align: center">
+        <thead class="bg-primary">
+          <tr style="color: lightyellow;">
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Estate</th>
+            <th scope="col">Occupants</th>
+        <%
+        if(req.session.uid == info.id){
+        %>
+
+        <th scope="col">Operation</th>
+
+        <%
+        }
+        %>
+
+            
+          </tr>
+        </thead>
+        <tbody>
+
+        <%
+        var i=1;
+        persons.forEach(function(model) {
+        %> 
+
+
+                  <tr>
+                    <th scope="row"><%=i%></th>
+                    <td><a href="/person/details/<%=model.id%>"><b><%=model.title%></b></a></td>
+                    <td><b><%=model.estate%></b></td>
+                    <td><a href="/user/occupants/<%=model.id%>"><b>Show all occupants</b></a></td>
+
+                    <%
+                    if(req.session.uid == info.id){
+                    %>
+                    <td><button class="btn btn-danger" type="submit" onclick="onClickMoveOut('<%=model.id%>','<%=info.id%>')">Move out</button></td>
+            
+                    <%
+                    }
+                    %>
+
+                    
+                  </tr>
+
+
+        <% 
+        i++;   
+        });
+        %>
+    </tbody>
+</table>
+
+<%
+}else{
+%>
+<h3 style="color:darkslategray;">You don't have permission to view resident list. </h3>
+<%
+}
+%>
+
+<br><br>
+
+
+
+
+<script>
+    async function onClickMoveOut(id,uid){
+
+        var r = confirm("Do you want to move out from the resident?");
+
+        if(r){
+            var response = await fetch("/moveout/"+ id +"/"+ uid,{
+                method:"POST",
+                credentials:'same-origin',
+            });
+
+            if(response.ok){
+                var data = await response.json();
+                alert(data.message);
+                window.location.reload();
+            }else if(response.status==401){
+                var data = response.text();
+                alert(data);
+            }else{
+                alert(response.statusText);
+            }
+        }
+};
+
+</script>

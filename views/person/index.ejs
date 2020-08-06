@@ -1,0 +1,55 @@
+<!--index.ejs-->
+<!--home page for system-->
+
+
+    <div class="card-deck row">
+      <%
+      residents.forEach(function(model){
+
+          var imgSrc = "http://img2.sjq315.com/uploadfiles/version2/2016/20151104/201511041828567524_840_1600.jpg";
+          if(model.img!=null && model.img.startsWith("http")){
+              if(model.img.endsWith(".jpg") || model.img.endsWith(".jpeg") || model.img.endsWith(".png")){
+                  imgSrc = model.img;
+              }
+          }
+
+      
+      %>
+
+          <div class="col-12 col-sm-12 col-lg-6 col-xl-6" style="margin: 0px 0px 18px ;">
+                <div class="card" >
+                    <div style="position: relative; padding-bottom: 60%; overflow: hidden;">
+                    <a href="/details/<%=model.id%>"><img class="card-img-top" src="<%=imgSrc%>" style="position: absolute;"/></a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/details/<%=model.id%>"><%=model.title%></a></h5>
+                        <ul class="list-group list-group-flush">
+                                <% if(model.estate!=null){%><li class="list-group-item"><b>Estate:&nbsp;</b><%=model.estate%></li><%}%>
+                                <% if(model.gross!=NaN){%><li class="list-group-item"><b>Gross:&nbsp;</b><%=model.gross%>&nbsp;feet</li><%}%>
+                                <% if(model.rent!=NaN){%><li class="list-group-item"><b>Rent:&nbsp;</b>HK$<%=model.rent%></li><%}%>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+
+            
+            <%
+            });
+            %>
+
+
+    </div>
+
+    <br><br>
+
+
+
+<script type="text/javascript">
+
+        function onPageLoaded(){
+            
+        };
+        
+</script>

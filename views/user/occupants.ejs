@@ -1,0 +1,45 @@
+<h1>Clients List</h1>
+
+<h3 style="color:darkslategray;"> <%=userList.length%> client(s) rented the resident - <%=person.estate%> </h3>
+
+
+<table class="table table-hover" style="margin: auto; text-align: center">
+        <thead class="bg-success">
+          <tr style="color: lightyellow;">
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+
+            <%if(req.session.role == "admin"){%>
+            <th scope="col">Name</th>
+            <%}%>
+
+            <th scope="col">Gender</th>
+            <th scope="col">Age</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        <%
+        var i=1;
+        userList.forEach(function(model) {
+        %> 
+
+
+                  <tr>
+                    <th scope="row"><%=i%></th>
+                    <td><a href="/user/information/<%=model.id%>"><b><%=model.username%></b></a></td>
+                    
+                    <%if(req.session.role == "admin"){%>
+                    <td><b><%=model.realname%></b></td>
+                    <%}%>
+
+                    <td><b><%=model.gender%></b></td>
+                    <td><b><%=model.age%></b></td>
+                  </tr>
+
+        <% 
+        i++;   
+        });
+        %>
+    </tbody>
+</table>

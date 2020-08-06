@@ -1,0 +1,175 @@
+
+
+
+    <div class="card-deck row" style="width:100%">
+
+        
+
+                <div class="col-12 col-sm-12 col-lg-4 col-xl-4" style="float: left; align-self: flex-start;">
+
+                    <form class="form-group" action="/search" method="GET">
+                                
+
+                        <h2>Property Search</h2>
+                        
+                        <div>
+                            Estate:<select class="form-control" id="selector" name="estate" value="<%=estate%>"></select><br>
+                        </div>
+
+                        <div>
+                            Bedrooms:<input type="number" class="form-control" id="bedrooms" name="bedrooms" value="<%=bedrooms%>"/><br>
+                        </div>
+
+
+                        <div>Area Sq(feet):</div>
+                        <div class="row">
+                            <div class="col-6 col-sm-6 col-lg-6 col-xl-6">
+                                min:<input type="number" class="form-control" min="1" id="gross_min" name="gross_min" value="<%=gross_min%>"/>
+                            </div>
+
+                            <div class="col-6 col-sm-6 col-lg-6 col-xl-6">
+                                max:<input type="number" class="form-control" min="1" id="gross_max" name="gross_max" value="<%=gross_max%>"/>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div>Rent(HK$):</div>
+                        <div class="row">
+                                <div class="col-6 col-sm-6 col-lg-6 col-xl-6">
+                                    min:<input type="number" class="form-control" min="1" id="rent_min" name="rent_min" value="<%=rent_min%>"/>
+                                </div>
+    
+                                <div class="col-6 col-sm-6 col-lg-6 col-xl-6">
+                                    max:<input type="number" class="form-control" min="1" id="rent_max" name="rent_max" value="<%=rent_max%>"/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <br>
+                                <button type="submit" class="btn btn-primary" id="submit" style="width: 80px">Submit</button>
+                                <button type="reset" class="btn btn-danger" id="reset" style="width: 80px;margin-left: 50px;" onclick=window.location.href="/search" >Reset</button>
+                                <br><br>
+                            </div>
+
+                    </form>
+
+
+
+
+
+                </div>
+
+
+
+                <%
+                parents.forEach(function(model){
+        
+                    var imgSrc = "http://img2.sjq315.com/uploadfiles/version2/2016/20151104/201511041828567524_840_1600.jpg";
+                    if(model.img!=null && model.img.startsWith("http")){
+                        if(model.img.endsWith(".jpg") || model.img.endsWith(".jpeg") || model.img.endsWith(".png")){
+                            imgSrc = model.img;
+                        }
+                    }
+            %>
+        
+            <div class="col-12 col-sm-12 col-lg-4 col-xl-4" style="margin: 0px 0px 18px ;">
+                    <div class="card" >
+                        <div style="position: relative; padding-bottom: 60%; overflow: hidden;">
+                        <a href="/parent/details/<%=model.id%>"><img class="card-img-top" src="<%=imgSrc%>" style="position: absolute;"/></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/parent/details/<%=model.id%>"><%=model.title%></a></h5>
+                            <ul class="list-group list-group-flush">
+                                    <% if(model.estate!=null){%><li class="list-group-item"><b>estate:&nbsp;</b><%=model.estate%></li><%}%>
+                                    <% if(model.gross!=NaN){%><li class="list-group-item"><b>Gross:&nbsp;</b><%=model.gross%>&nbsp;feet</li><%}%>
+                                    <% if(model.rent!=NaN){%><li class="list-group-item"><b>Rent:&nbsp;</b>HK$<%=model.rent%></li><%}%>
+                            </ul>
+        
+        
+                        </div>
+                    </div>
+                </div>
+                    
+            <%
+                });
+            
+            %>
+
+
+        </div>
+
+
+        <%
+        if(parents.length!=0){
+            %>
+                     <!-- Navigation bar-->
+                     <nav aria-label="Page navigation example" style="margin: 15px 0px 0px;">
+                         <ul class="pagination">
+
+                             <%if(current != 1){%>
+                             <li class="page-item">
+                                 <a class="page-link" href="/parent/search/?page=<%= Math.max(current-1, 1) %>&estate=<%=estate%>&bedrooms=<%=bedrooms%>&gross_min=<%=gross_min%>&gross_max=<%=gross_max%>&rent_min=<%=rent_min%>&rent_max=<%=rent_max%>">Previous</a>
+                             </li>
+                            <%}%>
+                     
+                         <% for (i = 1; i <= count; i++) { %>
+
+                             <li class="page-item">
+             
+             
+                                 <a class="page-link" href="/parent/search/?page=<%= i %>&estate=<%=estate%>&bedrooms=<%=bedrooms%>&gross_min=<%=gross_min%>&gross_max=<%=gross_max%>&rent_min=<%=rent_min%>&rent_max=<%=rent_max%>">
+                                     <%if(i==current){%>
+                                         <div style="color: red; font-weight: 500;"><%= i %></div>
+                                     <%}else{%>
+                                         <%= i %>
+                                     <%}%>
+                                 </a>
+                             </li>
+
+
+                         <% } 
+
+                         if(current != count){%>
+                         <li class="page-item">
+                             <a class="page-link" href="/parent/search/?page=<%= Math.min(current+1, count) %>&estate=<%=estate%>&bedrooms=<%=bedrooms%>&gross_min=<%=gross_min%>&gross_max=<%=gross_max%>&rent_min=<%=rent_min%>&rent_max=<%=rent_max%>">Next</a>
+                         </li>
+                         <%}%>
+
+
+                     </ul>
+                 </nav>
+             
+                 <%}%>
+
+
+
+
+
+<script>
+
+    function onPageLoaded(){
+
+        var estatesList = ["Bel-Air Residence","City Garden","Heng Fa Chuen","Island Place","Island Resort","Kornhill","Nam Fung Sun Chuen","Provident Centre","South Horizons","Taikoo Shing","Amoy Gardens","Hampton Place","Harbour Green","Laguna City","Laguna Verde","Mei Foo Sun Chuen","Parc Oasis","Sceneway Garden","Telford Gardens","Whampoa Garden","Wyler Gardens","Wonderland Villas","Ocean Shores","Tseung Kwan O Plaza","LOHAS Park","Belair Gardens","Castello","City One","Festival City","Royal Ascot","Sunshine City","Allway Gardens","Bayview Garden","Belvedere Garden","The Dynasty","Luk Yeung Sun Chuen","Serenade Cove","Bellagio","Ocean Pointe","Sea Crest Villa","Tsing Lung Tau","Hong Kong Gold Coast","Miami Beach Towers","Pierhead Garden","Sun Tuen Mun Centre","Tai Hing Gardens","Tuen Mun Town Plaza","Central Park Towers","Kingswood Villas","Vianni Cove","Sun Yuen Long Centre","YOHO Town"];
+        var estatesSleector = document.getElementById("selector");
+        var firstOption = document.createElement("option");
+        firstOption.text = "***Please select an estate***";
+        firstOption.value = "";
+        estatesSleector.add(firstOption);
+
+        estatesList.forEach(function(item){
+        var option = document.createElement("option");
+        option.text=item;
+        option.value=item;
+        estatesSleector.add(option);
+        });
+
+        var index = 0;
+        var estate = "<%=estate%>";
+        if(estate || estate!=""){
+        index = estatesList.indexOf("<%=estate%>")+1;
+        }
+        estatesSleector[index].selected = true;
+    };
+
+</script>
